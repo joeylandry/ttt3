@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HELLO TIC-TAC-TOE 3</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        /* turn indicator and win condition message style */
+        .turn-ind, .win-con {
+            border: 2px solid #000000;
+            padding: 10px;
+            margin: 10px;
+            font-size: 24px;
+        }
+
+        /* grid style */
+        .ttt-grid {
+            display: grid;
+            grid-template-columns: 100px 100px 100px;
+            grid-gap: 10px;
+        }
+
+        /* each square style */
+        .square {
+            background-color: #add8e6;
+            text-align: center;
+            font-size: 50px;
+            line-height: 100px;
+            width: 100px;
+            height: 100px;
+        }
+
+        .square:hover {
+            background-color: #90ee90;
+        }
+    </style>
+</head>
+<body>
+
+<h1>HELLO TIC-TAC-TOE</h1>
+
+<div class="turn-ind" id="turn-ind">X's Turn</div>
+
+<!-- start game button -->
+<button onclick="start()">Start Game</button>
+
+<script>
+document.write('<div class="ttt-grid">');
+
+const NUM_SQUARES = 9;
+for (let i = 0; i < NUM_SQUARES; i++) {
+    let id = "sq" + i;
+    document.write("<div class='square' id='" + id + "'></div>");
+}
+
+// Closes the TTT grid div 
+document.write('</div>');
+document.getElementById('sq2').textContent = 'X';
+document.getElementById('sq3').textContent = 'O'; 
+
+let currPlayer;
+let active = true;
+
+//starts the game, clears the board and determines first random player 
+function start() {
+    active = true;
+    clear();
+    //random player start
+    currPlayer = Math.random() < 0.5 ? 'X' : 'O';
+    document.getElementById('turn-ind').textContent = currPlayer + "'s Turn";
+}
+
+//click event for each square 
+for (let i = 0; i < NUM_SQUARES; i++) {
+    document.getElementById("sq" + i).addEventListener("click", function() {
+        clickSq(i);
+    });
+}
+
+//function for when each square is clicked
+function clickSq(index) {
+    if (!active) return;
+    const square = document.getElementById("sq" + index);
+
+    if (square.textContent !== "") return;
+
+    //set square to current player and disable further click
+    square.textContent = currPlayer;
+    square.classList.add('disabled');
+
+    alert("You clicked square " + index);
+
+    //change player turn
+    if (active) {
+        currPlayer = currPlayer === "X" ? "O" : "X";
+        document.getElementById("turn-ind").textContent = currPlayer + "'s Turn";
+    }
+}
+
+//clears the board for new game and reset win message
+function clear() {
+    for (let i = 0; i < NUM_SQUARES; i++) {
+        const square = document.getElementById("sq" + i);
+        square.textContent = "";
+        square.classList.remove('disabled');
+    }
+}
+</script>
+
+<!-- player win message -->
+<div class="win-con" id="win-con">Player ? Wins!</div>
+
+</body>
+</html>
